@@ -22,7 +22,7 @@
 	top: 24%;
 	left: 11.7%;
 	border-radius: 20px;
-	border: 1px #0f8ede solid;
+	border: 1px #ab1d1c solid;
 	position: absolute;
 }
 
@@ -37,11 +37,11 @@
 #admin_text {
 	top: 80%;
 	left: 34%;
-	font-size: 1.3vw;
+	font-size: 20px;
 	font-family: Montserrat;
 	font-weight: 400;
 	word-wrap: break-word;
-	color: #0f8ede;
+	color: #ab1d1c;
 	position: absolute;
 }
 
@@ -75,7 +75,7 @@
 	top: 80%;
 	left: 22%;
 	color: #d4c9c9;
-	font-size: 1.3vw;
+	font-size: 20px;
 	font-family: Montserrat;
 	font-weight: 400;
 	word-wrap: break-word;
@@ -94,31 +94,33 @@
 }
 
 #ssps_frame {
-	width: 19.5%;
-	height: 9%;
-	left: 17%;
-	top: 3%;
+	width: 220px;
+	height: 57.6px;
+	left: 25%;
+	top: 20px;
+	transform: translate(-50%, 0);
 	position: absolute;
-	background: #456db3;
+	background: #ab1d1c;
 	border-radius: 16px;
 }
 
 #logoBK {
-	width: 37%;
-	height: 130%;
-	left: -4%;
-	top: -10%;
+	width: 53.6px;
+	height: 53.6px;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
 	position: absolute;
 }
 
 #ssps_text {
 	width: 70%;
-	height: 60%;
-	left: 30%;
-	top: 0%;
+	left: 80px;
+	top: 50%;
+	transform: translate(0, -50%);
 	position: absolute;
 	color: rgb(255, 255, 255);
-	font-size: 1.3vw;
+	font-size: 20px;
 	font-family: Montserrat;
 	font-weight: 700;
 	word-wrap: break-word;
@@ -136,9 +138,9 @@
 } */
 
 button {
-	display: flex; /* Sử dụng flexbox để căn giữa */
-	justify-content: center; /* Căn giữa theo chiều ngang */
-	align-items: center; /* Căn giữa theo chiều dọc */
+	position: absolute;
+	transform: translateY(-60px);
+	top: 50px;
 	padding: 10px 20px; /* Cung cấp một chút padding để tạo không gian */
 	border: none; /* Nếu không cần border */
 	color: white; /* Màu chữ */
@@ -208,7 +210,7 @@ button {
 
 .hover-div:hover {
 	background-color: #b3b7bd;
-	color: #0f8ede;
+	color: #ab1d1c;
 }
 
 .hover-div-login {
@@ -217,7 +219,7 @@ button {
 	top: 920%;
 	left: 0%;
 	align-items: center;
-	background: #23abea;
+	background: #ab1d1c;
 	box-shadow: 0px 34px 40px -8px rgba(123, 118, 241, 0.24);
 	position: absolute;
 	border-radius: 56px;
@@ -230,6 +232,6 @@ button {
 }
 
 .hover-div-login:hover {
-	background-color: #148cee;
-	color: #0f8ede;
+	background-color: #ab1d1c;
+	color: #e51818;
 }

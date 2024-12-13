@@ -61,15 +61,13 @@
 		<link
 			href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
 			rel="stylesheet" />
-
-		<div
+			<div
 			style="
-				width: 100%;
-				height: 100%;
-				position: absolute;
-				background-image: url('static/images/Rectangle.png');
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					background-color: #ab1d1c;
 			"></div>
-
 		<div id="screen">
 			<div
 				onClick="window.location.href = 'login_for_admin';"
@@ -77,11 +75,11 @@
 				id="admin">
 				<img
 					id="checkbox"
-					src="{{ url_for('static', filename='images/Group 1171275873.png') }}" />
+					src="{{ url_for('static', filename='images/tick.png') }}" />
 				<img
 					id="imageadmin"
-					src="{{ url_for('static', filename='images/image 47.png') }}" />
-				<div id="admin_text">admin</div>
+					src="{{ url_for('static', filename='images/admin.png') }}" />
+				<div id="admin_text">Admin</div>
 			</div>
 			<div
 				onClick="window.location.href = '/';"
@@ -89,46 +87,46 @@
 				id="sinhvien_frame">
 				<img
 					id="sinhvien_icon"
-					src="{{ url_for('static', filename='images/image.png') }}" />
-				<div id="sinhvien_text">Sinh viên</div>
+					src="{{ url_for('static', filename='images/customer.png') }}" />
+				<div id="sinhvien_text">Customer</div>
 			</div>
 
 			<form action="/login_admin" method="POST">
 				<div style="top: 57%; left: 11.3%; position: absolute">
 					<div style="font-family: Montserrat; font-weight: 900">
-						<b>Tên đăng nhập</b>
+						<b>Username</b>
 					</div>
 					<input type="text" name="username" />
 				</div>
 				<div style="top: 69%; left: 11.3%; position: absolute">
 					<div style="font-family: Montserrat; font-weight: 900">
-						<b>Mật khẩu</b>
+						<b>Password</b>
 					</div>
 					<input type="password" name="password" />
 				</div>
 				<div style="top: 69%; left: 36%; position: absolute">
-					<span style="color: #0c2a92; font-size: 0.58vw; left: 90%"
-						>Quên mật khẩu?</span
+					<span style="color: #ab1d1c; font-size: 0.58vw; left: 90%"
+						>Forgot password?</span
 					>
 				</div>
-				<div id="dang_nhap_voi_tu_cach">ĐĂNG NHẬP VỚI TƯ CÁCH</div>
+				<div id="dang_nhap_voi_tu_cach">LOG IN AS</div>
 				<img
 					id="slideshow"
-					src="{{ url_for('static', filename='images/image 28.png') }}" />
+					src="{{ url_for('static', filename='images/Bookstore.jpg') }}" />
 				<div id="ssps_frame">
 					<img
 						id="logoBK"
-						src="{{ url_for('static', filename='images/01_logobachkhoatoi 1.png') }}" />
+						src="{{ url_for('static', filename='images/bookstore-icon.png') }}" />
 					<div id="ssps_text">E-bookstore</div>
-					<button type="submit" ; class="hover-div-login">
-						<div id="login_text">Đăng nhập</div>
+					<button type="submit" ; class="hover-div-login" id="login-button">
+						<div id="login_text">LOG IN</div>
 					</button>
 				</div>
 				<input id="save_account" type="checkbox" />
-				<b id="save_account_text">Lưu tài khoản</b>
+				<b id="save_account_text">Save Login</b>
 			</form>
 		</div>
-		<div id="wrongpw_message">Sai email hoặc mật khẩu!</div>
+		<div id="wrongpw_message">Wrong email or password!</div>
 		<script>
 			// Function to check query parameters and show error
 			window.onload = function () {

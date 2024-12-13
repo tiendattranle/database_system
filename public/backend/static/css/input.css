@@ -5,9 +5,9 @@ input {
 	border-radius: 10px;
 	width: 200%;
 	overflow: hidden;
-	border: 1.5px #23abea solid;
+	border: 1.5px #ab1d1c solid;
 	justify-content: flex-start;
-	border-color: #23abea;
+	border-color: #ab1d1c;
 	align-items: center;
 	gap: 10px;
 	display: inline-flex;

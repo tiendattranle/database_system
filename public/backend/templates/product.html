@@ -37,15 +37,7 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/styleIndex.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/chatbox.css') }}"
-    />
-	<link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/noti_box.css') }}"
+      href="{{ url_for('static', filename='css/styleProduct.css') }}"
     />
   </head>
   <body>
@@ -115,9 +107,9 @@
 						<div id="bar3"></div>
 					</div>
 					<ul id="menu">
-						<li onClick="window.location.href='index';" class="index-page">CATALOG</li>
-						<li onClick="window.location.href='cart';">CART</li>
-						<li onClick="window.location.href='order';">ORDER</li>
+						<li><a href="/index">CATALOG</a></li>
+						<li><a href="/cart">CART</a></li>
+						<li><a href="/order">ORDER</a></li>
 					</ul>
 				</div>
 				<div id="noti-account">
@@ -157,54 +149,65 @@
 					</div>
 				</div>
 			</div>
-      <div id="item-box" style="margin: 60px;">
-        <div class="product-grid" id="product-grid">
-          <!-- Products will be dynamically injected here -->
+      <div class="book-container">
+        <div id="book-image">
+          <img src="/static/images/book1.png" 
+               style="height: 600px;"
+               alt="Book Image" class="main-image">
+        </div>
+        <div class="book-details">
+          <h1 id="book-title"></h1>
+          <p id="book-category"></p>
+          <p id="book-publisher"></p>
+          <p id="book-publishing-year"></p>
+          <p id="book-author"></p>
+          <p id="book-cover"></p>
+          <p id="sales-count"></p>
+          <p>Number of pages</p>
+
+          <!-- Price Section -->
+          <div class="price-section">
+              <span class="book-price">60.000 đ</span>
+          </div>
+          <!-- Purchase Options -->
+          <div class="purchase-options">
+              <button class="btn add-to-cart">Add to Cart</button>
+          </div>
         </div>
       </div>
     </div>
     <script>
-      async function loadBooks() {
+      async function fetchBookDetails() {
+          const bookId = 1; // Replace with dynamic book ID if needed
           try {
-              const response = await fetch("/get_products");
-              const books = await response.json();
-              displayBooks(books);
+              const response = await fetch(`/book/${bookId}`);
+              if (!response.ok) {
+                  throw new Error('Book not found');
+              }
+
+              const book = await response.json();
+              displayBookDetails(book);
+              console.log(book)
           } catch (error) {
-              console.error("Error loading books:", error);
+              console.error('Error fetching book details:', error);
           }
       }
 
-      // Display books in the product grid
-      function displayBooks(books) {
-          const grid = document.getElementById("product-grid");
-          grid.innerHTML = ""; // Clear existing content
-
-          books.forEach(book => {
-              const bookCard = document.createElement("div");
-              bookCard.className = "product";
-
-              bookCard.innerHTML = `
-                  <img style="height: 200px;"
-                       src="${book.image}" alt="${book.title}">
-                  <h3>${book.title}</h3>
-                  <p class="price">${book.price.toLocaleString("vi-VN")} đ
-                  </p>
-                  <p class="sales">${book.sales} sold</p>
-              `;
-              bookCard.onclick = () => {
-                  window.location.href = `/product/${book.id}`; // Redirect to a specific book's page
-              };
-              bookCard.style = `
-                cursor: pointer;
-                &&:hover {
-                }
-              `
-              grid.appendChild(bookCard);
-          });
+      // Display book details
+      function displayBookDetails(book) {
+          document.getElementById('book-image').src = book.image;
+          document.getElementById('book-title').textContent = book.title;
+          document.getElementById('book-publisher').textContent = "Publisher: " + book.publisher;
+          document.getElementById('book-publishing-year').textContent = "Publishing Year: " + book.publishingYear;
+          document.getElementById('book-author').textContent = "Authors: " + book.author;
+          document.getElementById('book-category').textContent = "Category: " + book.category;
+          document.getElementById('book-cover').textContent = "Cover: " + book.cover;
+          document.getElementById('book-price').textContent = `${book.price.toLocaleString('vi-VN')} đ`;
+          document.getElementById('sales-count').textContent = `${book.sales} sold`;
       }
 
       // Load books on page load
-      document.addEventListener("DOMContentLoaded", loadBooks);
+      window.onload = fetchBookDetails;
     </script>
   </body>
 </html>

@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.book-container {
+    display: flex;
+    margin-top: 70px;
+    gap: 20px;
+}
+.book-image img {
+    width: 300px;
+    height: auto;
+    border-radius: 5px;
+}
+.book-details {
+    max-width: 600px;
+}
+.book-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.book-info {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+.price-section {
+    color: red;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+.original-price {
+    text-decoration: line-through;
+    color: gray;
+    font-size: 16px;
+}
+.sales-progress {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.sales-count {
+    font-size: 14px;
+}
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+.button {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: darkred;
+}

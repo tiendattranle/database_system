@@ -3,8 +3,7 @@
 	height: 65px;
 	color: #ffffff;
 	display: flex;
-	color: #142c64;
-	background: #23abea;
+	background: #d91e1e;
 	align-items: center;
 	position: fixed;
 	top: 0;
@@ -21,12 +20,12 @@
 #navbar .nav-block ul {
 	height: 100%;
 	position: absolute;
-	left: 280px;
+	left: 240px;
 	align-items: center;
 	display: inline-flex;
 }
 #navbar .nav-block ul li {
-	color: #000000;
+	color: #ffffff;
 	height: 100%;
 	text-decoration: none;
 	align-items: center;
@@ -40,15 +39,19 @@
 	padding: 0 15px 0 15px;
 	word-wrap: break-word;
 }
+a {
+	color: #ffffff;
+	text-decoration: none;
+}
 #navbar .nav-block ul li:hover {
-	background-color: #142c64;
+	background-color: #ab1d1c;
 	color: #ffffff;
 }
 #navbar .nav-block ul:hover ul.dropdown {
 	display: block;
 }
 #navbar .nav-block .index-page {
-	background-color: #142c64;
+	background-color: #ab1d1c;
 	color: #ffffff;
 }
 #navbar .nav-block #menu-icon {
@@ -97,7 +100,7 @@
 	font-size: 15px;
 	font-family: Montserrat, sans-serif;
 	font-weight: 400;
-	color: black;
+	color: #ffffff;
 }
 #navbar .info-list ul {
 	width: auto;
@@ -111,7 +114,7 @@
 }
 #navbar .info-list ul li ul.dropdown {
 	width: 125%;
-	color: #000000;
+	color: #ffffff;
 	background: #ffffff;
 	transform: translate(-17.5%, 65%);
 	margin-top: 10px;
@@ -136,7 +139,7 @@
 }
 #navbar .info-list ul li ul.dropdown li ul.nextpage {
 	width: 100%;
-	color: #000000;
+	color: #ffffff;
 	background: #ffffff;
 	transform: translate(-17.5%, 65%);
 	padding: 0;
@@ -180,7 +183,7 @@
 	#navbar .nav-block #bar3 {
 		width: 36px;
 		height: 4px;
-		background-color: #000000;
+		background-color: #ffffff;
 		margin: 6px;
 		transition: 0.4s;
 	}
@@ -206,7 +209,7 @@
 		position: absolute;
 	}
 	#navbar .nav-block ul li:hover {
-		background-color: #142c64;
+		background-color: #ab1d1c;
 		color: #ffffff;
 	}
 	#navbar #noti-account {

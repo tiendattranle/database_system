@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang chủ sinh viên</title>
+    <link
+      rel="shortcut icon"
+      href="static/images/HCMUT_official_logo.ico"
+      type="image/x-icon"
+    />
+    <style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f5f5f5;
+		}
+		.details-container {
+			background-color: white;
+			padding: 20px;
+			position: absolute;
+			border-radius: 10px;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			width: 400px;
+		}
+		button {
+			margin-top: 10px;
+		}
+		h2 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		.details {
+			margin-bottom: 15px;
+		}
+
+		.details p {
+			font-size: 1.1rem;
+			margin-bottom: 10px;
+		}
+
+		.details strong {
+			font-weight: bold;
+		}
+
+		.back-button {
+			text-align: center;
+		}
+
+		button {
+			width: 100%;
+			padding: 10px;
+			font-size: 1.1rem;
+			background-color: #d91e1e;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #ab1d1c;
+		}
+    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/navbar.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/acccountStyle.css') }}"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Itim&display=swap"
+      rel="stylesheet"
+    />
+    <div id="customer-home-page">
+		<div id="navbar">
+			<div
+				id="logo"
+				style="
+					width: 220px;
+					height: 57.6px;
+					left: 40px;
+					top: 5.6px;
+					position: absolute;
+					background: #ab1d1c;
+					border-radius: 16px;
+				">
+				<img
+					style="
+						width: 53.6px;
+						height: 53.6px;
+						left: 10px;
+						top: 50%;
+						transform: translateY(-50%);
+						position: absolute;
+					"
+					src="{{ url_for('static', filename='images/bookstore-icon.png') }}" />
+				<div
+					style="
+						width: 70%;
+						left: 80px;
+						top: 50%;
+						transform: translate(0, -50%);
+						position: absolute;
+						color: white;
+						font-size: 20px;
+						font-family: Montserrat;
+						font-weight: 700;
+						word-wrap: break-word;
+					">
+					E-bookstore
+				</div>
+			</div>
+			<div class="nav-block">
+				<script>
+					function openMenu(x) {
+						x.classList.toggle("change");
+						const menu = document.getElementById("menu");
+						if (menu.classList.contains("appear")) {
+							menu.classList.remove("appear");
+						} else {
+							menu.classList.add("appear");
+						}
+					}
+				</script>
+				<div id="menu-icon" onclick="openMenu(this)">
+					<div id="bar1"></div>
+					<div id="bar2"></div>
+					<div id="bar3"></div>
+				</div>
+				<ul id="menu">
+					<li onClick="window.location.href='index';">CATALOG</li>
+					<li onClick="window.location.href='cart';">CART</li>
+					<li onClick="window.location.href='order';">ORDER</li>
+				</ul>
+			</div>
+			<div id="noti-account">
+				<div class="info-list">
+					<ul>
+						<li>
+							<img src="" class="profile-img" alt="Profile Picture">
+							<div class="name">{{ name }}</div>
+							<ul class="dropdown">
+								<li><a href="/account">Account</a></li>
+								<li>
+									<a>Language</a>
+									<ul class="nextpage">
+										<li>Tiếng Việt</li>
+										<li>English</li>
+									</ul>
+								</li>
+								<li><a href="/">Log out</a></li>
+							</ul>
+							<svg
+								style="padding: 0 10px, 0 10px"
+								width="10"
+								height="5"
+								viewBox="0 0 12 8"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								style="margin-left: -5px">
+								<path
+									d="M1 1L6 6L11 1"
+									stroke="black"
+									stroke-width="1.6"
+									stroke-linecap="round"
+									stroke-linejoin="round" />
+							</svg>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="details-container">
+			<h2>Your Submitted Details</h2>
+			<div class="details">
+				<p><strong>Full Name:</strong> <span id="full-name"></span></p>
+				<p><strong>Phone Number:</strong> <span id="phone-number"></span></p>
+				<p><strong>Date of Birth:</strong> <span id="dob"></span></p>
+				<p><strong>Gender:</strong> <span id="gender"></span></p>
+				<p><strong>Email:</strong> <span id="email"></span></p>
+				<p><strong>Password:</strong> <span id="password"></span></p>
+			</div>
+			<div class="back-button">
+				<button onclick="window.history.back()">Go Back</button>
+			</div>
+			<div class="update-button">
+				<button onClick="window.location.href='account-update';">Change information</button>
+			</div>
+		</div>
+	
+		<script>
+			// Assuming you have the form data available from a server or a form submission, here we simulate displaying the data
+	
+			// Example values (these would come from a database or form submission)
+			const userDetails = {
+				fullName: "John Doe",
+				phoneNumber: "1234567890",
+				dob: "1990-01-01",
+				gender: "Male",
+				email: "johndoe@example.com",
+				password: "******"  // In real use, passwords should not be shown for security reasons
+			};
+	
+			// Populate the details on the page
+			document.getElementById('full-name').textContent = userDetails.fullName;
+			document.getElementById('phone-number').textContent = userDetails.phoneNumber;
+			document.getElementById('dob').textContent = userDetails.dob;
+			document.getElementById('gender').textContent = userDetails.gender;
+			document.getElementById('email').textContent = userDetails.email;
+			document.getElementById('password').textContent = userDetails.password;  // Consider removing password display in practice
+		</script>
+    </div>
+  </body>
+</html>

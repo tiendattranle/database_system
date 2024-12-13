@@ -37,49 +37,38 @@
       <div
         id="logo"
         style="
-          width: 285.6px;
+          width: 220px;
           height: 57.6px;
           left: 40px;
           top: 5.6px;
           position: absolute;
-        "
-      >
-        <div
-          style="
-            width: 255px;
-            height: 53.6px;
-            left: 17.6px;
-            top: 0px;
-            position: absolute;
-            background: #142c64;
-            border-radius: 16px;
-          "
-        ></div>
+          background: #ab1d1c;
+          border-radius: 16px;
+        ">
         <img
           style="
-            width: 88.8px;
-            height: 56.8px;
-            left: 0px;
-            top: 0.8px;
+            width: 53.6px;
+            height: 53.6px;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             position: absolute;
           "
-          src="{{ url_for('static', filename='images/01_logobachkhoatoi 1.png') }}"
-        />
+          src="{{ url_for('static', filename='images/bookstore-icon.png') }}" />
         <div
           style="
-            width: 178px;
-            height: 49px;
-            left: 85px;
-            top: 0px;
+            width: 70%;
+            left: 80px;
+            top: 50%;
+            transform: translate(0, -50%);
             position: absolute;
             color: white;
-            font-size: 22.4px;
+            font-size: 20px;
             font-family: Montserrat;
             font-weight: 700;
             word-wrap: break-word;
-          "
-        >
-        E-bookstore
+          ">
+          E-bookstore
         </div>
       </div>
       <div class="nav-block">
@@ -100,16 +89,11 @@
           <div id="bar3"></div>
         </div>
         <ul id="menu">
-          <li onClick="window.location.href='index';">TRANG CHỦ</li>
-          <li
-            onClick="window.location.href='customer_dashboard';"
-            class="index-page"
-          >
-            BẢNG ĐIỀU KHIỂN
+          <li onClick="window.location.href='index';">HOME</li>
+          <li onClick="window.location.href='customer_dashboard'" class="index-page">
+            CATALOG
           </li>
-          <li onClick="window.location.href='upload_file';">IN TÀI LIỆU</li>
-          <li onClick="window.location.href='printing_history';">LỊCH SỬ IN</li>
-          <li onClick="window.location.href='buy_paper';">MUA THÊM GIẤY</li>
+          <li onClick="window.location.href='upload_file';">CART</li>
         </ul>
       </div>
       <div id="noti-account">
@@ -120,16 +104,14 @@
             height="20"
             viewBox="0 0 18 20"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+            xmlns="http://www.w3.org/2000/svg">
             <path
               id="Vector"
               d="M12 15V16C12 17.6569 10.6569 19 9 19C7.34315 19 6 17.6569 6 16V15M12 15H6M12 15H15.5905C15.973 15 16.1652 15 16.3201 14.9478C16.616 14.848 16.8475 14.6156 16.9473 14.3198C16.9997 14.1643 16.9997 13.9715 16.9997 13.5859C16.9997 13.4172 16.9995 13.3329 16.9863 13.2524C16.9614 13.1004 16.9024 12.9563 16.8126 12.8312C16.7651 12.7651 16.7048 12.7048 16.5858 12.5858L16.1963 12.1963C16.0706 12.0706 16 11.9001 16 11.7224V8C16 4.134 12.866 0.999991 9 1C5.13401 1.00001 2 4.13401 2 8V11.7224C2 11.9002 1.92924 12.0706 1.80357 12.1963L1.41406 12.5858C1.29476 12.7051 1.23504 12.765 1.1875 12.8312C1.09766 12.9564 1.03815 13.1004 1.0132 13.2524C1 13.3329 1 13.4172 1 13.586C1 13.9715 1 14.1642 1.05245 14.3197C1.15225 14.6156 1.3848 14.848 1.68066 14.9478C1.83556 15 2.02701 15 2.40956 15H6"
               stroke="black"
               stroke-width="1.6"
               stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+              stroke-linejoin="round" />
           </svg>
           <svg
             id="bell"
@@ -137,40 +119,38 @@
             height="41"
             viewBox="0 0 42 41"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+            xmlns="http://www.w3.org/2000/svg">
             <path
               id="Ellipse 3230"
               d="M41 20.5C41 31.5457 32.0457 40.5 21 40.5C9.9543 40.5 1 31.5457 1 20.5C1 9.4543 9.9543 0.5 21 0.5C32.0457 0.5 41 9.4543 41 20.5Z"
-              stroke="black"
-            />
+              stroke="black" />
           </svg>
           <div id="notification-box" class="hidden">
             <div class="notification-header">Thông báo</div>
-            <ul class="notification-list">
+              <ul class="notification-list">
                 {% if notifications %}
-                    {% for notification in notifications %}
-                    <li>
-                        <span class="notification-title">Thông báo {{ loop.index }}</span> <!-- Hiển thị số thứ tự thông báo -->
-                        <p>{{ notification[0] }}</p> <!-- Nội dung thông báo -->
-                        <div class="notification-footer">
-                            <span class="notification-time">{{ notification[1] }}</span> <!-- Thời gian thông báo -->
-                            <button class="notification-detail-btn">Xem chi tiết</button>
-                        </div>
-                    </li>
-                    {% endfor %}
-                {% else %}
-                    <li>
-                        <p>Không có thông báo nào.</p> <!-- Thông báo khi không có dữ liệu -->
-                    </li>
+                {% for notification in notifications %}
+                <li>
+                  <span class="notification-title">Thông báo {{ loop.index }}</span> <!-- Hiển thị số thứ tự thông báo -->
+                  <p>{{ notification[0] }}</p> <!-- Nội dung thông báo -->
+                  <div class="notification-footer">
+                    <span class="notification-time">{{ notification[1] }}</span> <!-- Thời gian thông báo -->
+                    <button class="notification-detail-btn">Xem chi tiết</button>
+                  </div>
+                </li>
+                  {% endfor %}
+                  {% else %}
+                <li>
+                  <p>Không có thông báo nào.</p> <!-- Thông báo khi không có dữ liệu -->
+                </li>
                 {% endif %}
-            </ul>
-        </div>
+              </ul>
+            </div>
         </div>
         <div class="info-list">
           <ul>
             <li>
-              <img src="data:image/png;base64,{{ profile_picture1_base64 }}" class="profile-img" alt="Profile Picture">
+              <img src="" class="profile-img" alt="Profile Picture">
               <div class="name">{{ name }}</div>
               <ul class="dropdown">
                 <li><a>Hồ sơ</a></li>
@@ -190,15 +170,13 @@
                 viewBox="0 0 12 8"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                style="margin-left: -5px"
-              >
+                style="margin-left: -5px">
                 <path
                   d="M1 1L6 6L11 1"
                   stroke="black"
                   stroke-width="1.6"
                   stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+                  stroke-linejoin="round" />
               </svg>
             </li>
           </ul>

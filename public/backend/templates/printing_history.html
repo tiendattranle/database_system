@@ -31,40 +31,33 @@
 			<div
 				id="logo"
 				style="
-					width: 285.6px;
+					width: 220px;
 					height: 57.6px;
 					left: 40px;
 					top: 5.6px;
 					position: absolute;
+					background: #ab1d1c;
+					border-radius: 16px;
 				">
-				<div
-					style="
-						width: 255px;
-						height: 53.6px;
-						left: 17.6px;
-						top: 0px;
-						position: absolute;
-						background: #142c64;
-						border-radius: 16px;
-					"></div>
 				<img
 					style="
-						width: 88.8px;
-						height: 56.8px;
-						left: 0px;
-						top: 0.8px;
+						width: 53.6px;
+						height: 53.6px;
+						left: 10px;
+						top: 50%;
+						transform: translateY(-50%);
 						position: absolute;
 					"
-					src="{{ url_for('static', filename='images/01_logobachkhoatoi 1.png') }}" />
+					src="{{ url_for('static', filename='images/bookstore-icon.png') }}" />
 				<div
 					style="
-						width: 178px;
-						height: 49px;
-						left: 85px;
-						top: 0px;
+						width: 70%;
+						left: 80px;
+						top: 50%;
+						transform: translate(0, -50%);
 						position: absolute;
 						color: white;
-						font-size: 22.4px;
+						font-size: 20px;
 						font-family: Montserrat;
 						font-weight: 700;
 						word-wrap: break-word;
@@ -91,12 +84,16 @@
 				</div>
 				<ul id="menu">
 					<li onClick="window.location.href='index';">TRANG CHỦ</li>
-					<li onClick="window.location.href='customer_dashboard';">
+					<li onClick="window.location.href='customer_dashboard'" ;>
 						BẢNG ĐIỀU KHIỂN
 					</li>
 					<li onClick="window.location.href='upload_file';">IN TÀI LIỆU</li>
-					<li class="index-page">LỊCH SỬ IN</li>
-					<li onClick="window.location.href='buy_paper';">MUA THÊM GIẤY</li>
+					<li onClick="window.location.href='printing_history';" class="index-page">
+						LỊCH SỬ IN
+					</li>
+					<li onClick="window.location.href='buy_paper';">
+						MUA THÊM GIẤY
+					</li>
 				</ul>
 			</div>
 			<div id="noti-account">
@@ -128,39 +125,32 @@
 							d="M41 20.5C41 31.5457 32.0457 40.5 21 40.5C9.9543 40.5 1 31.5457 1 20.5C1 9.4543 9.9543 0.5 21 0.5C32.0457 0.5 41 9.4543 41 20.5Z"
 							stroke="black" />
 					</svg>
-					<div id="notification-box" class="hidden">
-						<div class="notification-header">Thông báo</div>
-						<ul class="notification-list">
-							{% if notifications %} {% for notification in notifications %}
-							<li>
-								<span class="notification-title"
-									>Thông báo {{ loop.index }}</span
-								>
-								<!-- Hiển thị số thứ tự thông báo -->
-								<p>{{ notification[0] }}</p>
-								<!-- Nội dung thông báo -->
-								<div class="notification-footer">
-									<span class="notification-time">{{ notification[1] }}</span>
-									<!-- Thời gian thông báo -->
-									<button class="notification-detail-btn">Xem chi tiết</button>
-								</div>
-							</li>
-							{% endfor %} {% else %}
-							<li>
-								<p>Không có thông báo nào.</p>
-								<!-- Thông báo khi không có dữ liệu -->
-							</li>
-							{% endif %}
-						</ul>
-					</div>
+		<div id="notification-box" class="hidden">
+		  <div class="notification-header">Thông báo</div>
+			<ul class="notification-list">
+			  {% if notifications %}
+			  {% for notification in notifications %}
+			  <li>
+				<span class="notification-title">Thông báo {{ loop.index }}</span> <!-- Hiển thị số thứ tự thông báo -->
+				<p>{{ notification[0] }}</p> <!-- Nội dung thông báo -->
+				<div class="notification-footer">
+				  <span class="notification-time">{{ notification[1] }}</span> <!-- Thời gian thông báo -->
+				  <button class="notification-detail-btn">Xem chi tiết</button>
+				</div>
+			  </li>
+				{% endfor %}
+				{% else %}
+			  <li>
+				<p>Không có thông báo nào.</p> <!-- Thông báo khi không có dữ liệu -->
+			  </li>
+			  {% endif %}
+			</ul>
+		  </div>
 				</div>
 				<div class="info-list">
 					<ul>
 						<li>
-							<img
-								src="data:image/png;base64,{{ profile_picture_base64 }}"
-								class="profile-img"
-								alt="Profile Picture" />
+							<img src="" class="profile-img" alt="Profile Picture">
 							<div class="name">{{ name }}</div>
 							<ul class="dropdown">
 								<li><a>Hồ sơ</a></li>
