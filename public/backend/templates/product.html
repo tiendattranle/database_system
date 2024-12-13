@@ -151,7 +151,7 @@
 			</div>
       <div class="book-container">
         <div id="book-image">
-          <img src="/static/images/book1.png" 
+          <img id="book-img" src=""
                style="height: 600px;"
                alt="Book Image" class="main-image">
         </div>
@@ -163,11 +163,12 @@
           <p id="book-author"></p>
           <p id="book-cover"></p>
           <p id="sales-count"></p>
-          <p>Number of pages</p>
+          <p id="no-page"></p>
+          <p id="size"></p>
 
           <!-- Price Section -->
           <div class="price-section">
-              <span class="book-price">60.000 đ</span>
+              <span id="book-price">60.000 đ</span>
           </div>
           <!-- Purchase Options -->
           <div class="purchase-options">
@@ -178,9 +179,8 @@
     </div>
     <script>
       async function fetchBookDetails() {
-          const bookId = 1; // Replace with dynamic book ID if needed
           try {
-              const response = await fetch(`/book/${bookId}`);
+              const response = await fetch(`/book`);
               if (!response.ok) {
                   throw new Error('Book not found');
               }
@@ -195,15 +195,17 @@
 
       // Display book details
       function displayBookDetails(book) {
-          document.getElementById('book-image').src = book.image;
-          document.getElementById('book-title').textContent = book.title;
+          document.getElementById('book-img').src = book.img;
+          document.getElementById('book-title').textContent = book.name;
           document.getElementById('book-publisher').textContent = "Publisher: " + book.publisher;
-          document.getElementById('book-publishing-year').textContent = "Publishing Year: " + book.publishingYear;
+          document.getElementById('book-publishing-year').textContent = "Publishing Year: " + book.publishYear;
           document.getElementById('book-author').textContent = "Authors: " + book.author;
           document.getElementById('book-category').textContent = "Category: " + book.category;
           document.getElementById('book-cover').textContent = "Cover: " + book.cover;
           document.getElementById('book-price').textContent = `${book.price.toLocaleString('vi-VN')} đ`;
-          document.getElementById('sales-count').textContent = `${book.sales} sold`;
+          document.getElementById('sales-count').textContent = `${book.noStock} in stock`;
+          document.getElementById('no-page').textContent = `Number of pages: ${book.noPages}`;
+          document.getElementById('size').textContent = `Size: ${book.size}`;
       }
 
       // Load books on page load

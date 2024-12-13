@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trang chủ sinh viên</title>
+    <title>Catalog</title>
     <link
       rel="shortcut icon"
       href="static/images/HCMUT_official_logo.ico"
@@ -38,14 +38,6 @@
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/styleIndex.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/chatbox.css') }}"
-    />
-	<link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/noti_box.css') }}"
     />
   </head>
   <body>
@@ -168,6 +160,7 @@
           try {
               const response = await fetch("/get_products");
               const books = await response.json();
+              console.log(books)
               displayBooks(books);
           } catch (error) {
               console.error("Error loading books:", error);
@@ -181,18 +174,19 @@
 
           books.forEach(book => {
               const bookCard = document.createElement("div");
+              console.log(book)
               bookCard.className = "product";
 
               bookCard.innerHTML = `
                   <img style="height: 200px;"
-                       src="${book.image}" alt="${book.title}">
-                  <h3>${book.title}</h3>
-                  <p class="price">${book.price.toLocaleString("vi-VN")} đ
+                       src="${book[11]}" alt="${book[2]}">
+                  <h3>${book[2]}</h3>
+                  <p class="price">${book[4].toLocaleString("vi-VN")} đ
                   </p>
-                  <p class="sales">${book.sales} sold</p>
+                  <p class="sales">${book[5]} in stock</p>
               `;
               bookCard.onclick = () => {
-                  window.location.href = `/product/${book.id}`; // Redirect to a specific book's page
+                  window.location.href = `/product/${book[0]}`; // Redirect to a specific book's page
               };
               bookCard.style = `
                 cursor: pointer;

@@ -11,64 +11,19 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
+idx = 6
 
-
-
-books = [
-    {
-        "id": 1,
-        "title": "The Little Prince",
-        "price": 150000,
-        "sales": 100,
-        "image": "static/images/book1.png"
-    },
-    {
-        "id": 2,
-        "title": "Tuesdays with Morrie",
-        "price": 210000,
-        "sales": 75,
-        "image": "static/images/book2.png"
-    },
-    {
-        "id": 3,
-        "title": "7 Habits of Highly Effective People",
-        "price": 300000,
-        "sales": 45,
-        "image": "static/images/book3.png"
-    },
-    {
-        "id": 3,
-        "title": "7 Habits of Highly Effective People",
-        "price": 300000,
-        "sales": 45,
-        "image": "static/images/book3.png"
-    },
-    {
-        "id": 3,
-        "title": "7 Habits of Highly Effective People",
-        "price": 300000,
-        "sales": 45,
-        "image": "static/images/book3.png"
-    },
-    {
-        "id": 3,
-        "title": "7 Habits of Highly Effective People",
-        "price": 300000,
-        "sales": 45,
-        "image": "static/images/book3.png"
-    }
-]
 
 
 # Kết nối cơ sở dữ liệu
 def get_db_connection():
-    return psycopg2.connect(database="CNPM", user="postgres", password="123456", host="localhost", port="5432")
+    return psycopg2.connect(database="DBS", user="postgres", password="123456", host="localhost", port="5432")
 
 # Yêu cầu đăng nhập
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'username' not in session:
+        if 'email' not in session:
             return redirect(url_for('login_for_customer'))
         return f(*args, **kwargs)
     return decorated_function
@@ -76,148 +31,154 @@ def login_required(f):
 @app.route('/index')
 @login_required
 def index():
-    username = session.get('username')
-    logger.debug(f"Session username: {username}")  # Thêm dòng log này
-
-    if not username:
+    email = session.get('email')
+    Fname = session.get('Fname')
+    logger.debug(f"Session email: {email}")  # Thêm dòng log này
+    books = get_books()
+    if not email:
         return redirect(url_for('login_for_customer'))
 
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT name, profile_picture FROM "User" WHERE username = %s', (username,))
-    user = cur.fetchone()
-    logger.debug(f"User fetched: {user}")  # Thêm dòng log này
 
     cur.close()
     conn.close()
 
-    if user:
-        name = user[0]
-        profile_picture2 = user[1]
-        logger.debug(f"Name: {name}")  # Thêm dòng log này
-        logger.debug(f"Fetched profile picture for {username}: {name}")  # Log ảnh đại diện đã được lấy
-        if profile_picture2:
-            profile_picture2_base64 = base64.b64encode(profile_picture2).decode('utf-8')  # Chuyển sang chuỗi base64
-        else:
-            profile_picture2_base64 = None
-        return render_template('index.html', name=name, profile_picture2_base64=profile_picture2_base64)
-    else:
-        return "User not found", 404
+    name = Fname
+    logger.debug(f"Name: {name}")  # Thêm dòng log này
+    logger.debug(f"Fetched profile picture for {email}: {name}")  # Log ảnh đại diện đã được lấy
+
+    return render_template('index.html', name=name, books=books)
    
-@app.route('/product/<int:item_id>')
+@app.route('/product/<string:item_id>')
 @login_required
 def product(item_id):
-    username = session.get('username')
-    logger.debug(f"Session username: {username}")  # Thêm dòng log này
+    Fname = session.get('Fname')
+    session['itemID'] = item_id
+    name = Fname
+    return render_template('product.html', name=name)
 
-    if not username:
-        return redirect(url_for('login_for_customer'))
-
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute('SELECT name, profile_picture FROM "User" WHERE username = %s', (username,))
-    user = cur.fetchone()
-    logger.debug(f"User fetched: {user}")  # Thêm dòng log này
-
-    cur.close()
-    conn.close()
-
-    if user:
-        name = user[0]
-        profile_picture2 = user[1]
-        logger.debug(f"Name: {name}")  # Thêm dòng log này
-        logger.debug(f"Fetched profile picture for {username}: {name}")  # Log ảnh đại diện đã được lấy
-        if profile_picture2:
-            profile_picture2_base64 = base64.b64encode(profile_picture2).decode('utf-8')  # Chuyển sang chuỗi base64
-        else:
-            profile_picture2_base64 = None
-        return render_template('product.html', name=name, profile_picture2_base64=profile_picture2_base64, item_id=item_id)
-    else:
-        return "User not found", 404
 @app.route('/account')
 @login_required
 def account():
-    username = session.get('username')
-    logger.debug(f"Session username: {username}")  # Thêm dòng log này
+    email = session.get('email')
+    Fname = session.get('Fname')
+    logger.debug(f"Session email: {email}")  # Thêm dòng log này
 
-    if not username:
+    if not email:
         return redirect(url_for('login_for_customer'))
 
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT name, profile_picture FROM "User" WHERE username = %s', (username,))
-    user = cur.fetchone()
-    logger.debug(f"User fetched: {user}")  # Thêm dòng log này
 
     cur.close()
     conn.close()
 
-    if user:
-        name = user[0]
-        profile_picture2 = user[1]
-        logger.debug(f"Name: {name}")  # Thêm dòng log này
-        logger.debug(f"Fetched profile picture for {username}: {name}")  # Log ảnh đại diện đã được lấy
-        if profile_picture2:
-            profile_picture2_base64 = base64.b64encode(profile_picture2).decode('utf-8')  # Chuyển sang chuỗi base64
-        else:
-            profile_picture2_base64 = None
-        return render_template('account.html', name=name, profile_picture2_base64=profile_picture2_base64)
-    else:
-        return "User not found", 404
+    name = Fname
+    logger.debug(f"Name: {name}")  # Thêm dòng log này
+    logger.debug(f"Fetched profile picture for {email}: {name}")  # Log ảnh đại diện đã được lấy
+
+    return render_template('account.html', name=name)
 
 @app.route('/account-update')
 @login_required
 def account_update():
-    username = session.get('username')
-    logger.debug(f"Session username: {username}")  # Thêm dòng log này
+    email = session.get('email')
+    Fname = session.get('Fname')
+    logger.debug(f"Session email: {email}")  # Thêm dòng log này
 
-    if not username:
+    if not email:
         return redirect(url_for('login_for_customer'))
 
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT name, profile_picture FROM "User" WHERE username = %s', (username,))
-    user = cur.fetchone()
-    logger.debug(f"User fetched: {user}")  # Thêm dòng log này
 
     cur.close()
     conn.close()
 
-    if user:
-        name = user[0]
-        profile_picture2 = user[1]
-        logger.debug(f"Name: {name}")  # Thêm dòng log này
-        logger.debug(f"Fetched profile picture for {username}: {name}")  # Log ảnh đại diện đã được lấy
-        if profile_picture2:
-            profile_picture2_base64 = base64.b64encode(profile_picture2).decode('utf-8')  # Chuyển sang chuỗi base64
-        else:
-            profile_picture2_base64 = None
-        return render_template('account_update.html', name=name, profile_picture2_base64=profile_picture2_base64)
-    else:
-        return "User not found", 404
+    name = Fname
+    logger.debug(f"Name: {name}")  # Thêm dòng log này
+    logger.debug(f"Fetched profile picture for {email}: {name}")  # Log ảnh đại diện đã được lấy
+
+    return render_template('account_update.html', name=name)
 
 @app.route("/get_products", methods=["GET"])
 def get_books():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('''SELECT * FROM Book''')
+    books = cur.fetchall()
+    cur.close()
+    conn.close()
     return jsonify(books)
 
-@app.route('/book/<string:book_id>')
-def get_book(book_id):
-    book = {
-        "id": 1,
-        "title": "The Little Prince",
-        "price": 150000,
-        "category": "Mom and baby",
-        "publishingYear": 2022,
-        "publisher": "",
-        "cover": "soft",
-        "author": "",
-        "sales": 100,
-        "image": "static/images/book1.png"
-    }
-    if book:
-        return jsonify(book)
-    else:
-        return jsonify({"error": "Book not found"}), 404
+@app.route("/delete-account")
+def delete_account():
+    userID = session.get('userID')
+    email = session.get('email')
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(f'''DELETE FROM Customer WHERE customerID = '{userID}';''')
+    cur.execute(f'''DELETE FROM AppUser WHERE userID = '{userID}';''')
+    cur.execute(f'''DELETE FROM UserAccount WHERE email = '{email}';''')
+    cur.close()
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Delete successfully"})
+
+def retrive_books():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('''SELECT * FROM Book''')
+    books = cur.fetchall()
+    cur.close()
+    conn.close()
+    return books
+
+@app.route('/book')
+def get_book():
+    books = retrive_books()
+    book_id = session.get('itemID')
+    logger.debug(f'book_id: {book_id}')
+    for book in books:
+        if book[0] == book_id:
+            return jsonify({"bookID": book[0], "category": book[1], "name": book[2], "author": book[3], "price": book[4], "noStock": book[5], "cover": book[6], "publisher": book[7], "publishYear": book[8], "noPages": book[9], "size": book[10], "img": book[11]}), 200
+    return jsonify({"error": "Book not found"}), 404
+
+@app.route('/get-info')
+def get_info():
+    userID = session.get('userID')
+    email = session.get('email')
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # Using parameterized query to avoid SQL injection
+        cur.execute(f'''SELECT * FROM Customer WHERE customerID = '{userID}';''')
+        info = cur.fetchone()
+
+        if not info:
+            return jsonify({"error": "User not found"}), 404
+        
+        cur.close()
+        conn.close()
+        if info[2] == 'M': info[2] = "Male"
+        if info[2] == 'F': info[2] = "Female"
+        print("bi cai gi vay troi")
+        return jsonify({
+            "message": "success",
+            "userID": info[0],
+            "fullName": info[1],
+            "gender": info[2],
+            "dob": info[3],
+            "phoneNumber": info[4],
+            "email": email,
+            "points": info[5]
+        }), 200
+    except Exception as e:
+        # Log the error and return a generic server error
+        print(f"Error: {e}")
+        return jsonify({"error": "An internal error occurred"}), 500
 
 @app.route('/')
 def login_for_customer():
@@ -235,99 +196,85 @@ def login_for_admin():
 @app.route('/cart')
 @login_required
 def cart():
-    username = session.get('username')  # Lấy username từ session
-    if not username:
+    email = session.get('email')  # Lấy email từ session
+    Fname = session.get('Fname')
+    logger.debug(f"Session email: {email}")
+    if not email:
         return redirect(url_for('login_for_customer'))  # Nếu không có session, chuyển hướng đến trang login
     
     conn = get_db_connection()
     cur = conn.cursor()
     
     # Truy vấn tên người dùng từ bảng "User"
-    cur.execute('SELECT name, profile_picture FROM "User" WHERE username = %s', (username,))
-    user = cur.fetchone()
-    if user:
-        name = user[0]  # Lấy tên từ kết quả truy vấn
-        profile_picture3 = user[1] 
-        logger.debug(f"Fetched name for user {username}: {name}")
-        logger.debug(f"Fetched profile picture for {username}: {name}")  # Log ảnh đại diện đã được lấy
-        if profile_picture3:
-            profile_picture3_base64 = base64.b64encode(profile_picture3).decode('utf-8')  # Chuyển sang chuỗi base64
-        else:
-            profile_picture3_base64 = None
-    else:
-        cur.close()
-        conn.close()
-        return "User not found", 404
-
+    
+    # cur.execute("""
+    #             SELECT product_name, quantity, price, discounted_price, image_url
+    #             FROM Cart
+    #             WHERE user_id = %s;
+    #         """, (email,))
+    rows = 1#cur.fetchall()
     cur.close()
     conn.close()
-    data = request.get_json()  # Parse JSON body
-    user_id = data.get('user_id')
-    
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT product_name, quantity, price, discounted_price, image_url
-        FROM Cart
-        WHERE user_id = %s;
-    """, (user_id,))
-    rows = cursor.fetchall()
-    cursor.close()
     
     # Truyền dữ liệu vào template
-    return render_template('cart.html', name=name, profile_picture3_base64=profile_picture3_base64, rows=rows)
+    return render_template('cart.html', name=Fname, rows=rows)
  
 
 @app.route('/order')
 @login_required
 def order():
-    username = session.get('username')  # Lấy username từ session
-    if not username:
-        return redirect(url_for('login_for_customer'))  # Nếu không có session, chuyển hướng đến trang login
-    
+    Fname = session.get('Fname')  # Lấy email từ session
+    # Truyền dữ liệu vào template
+    return render_template('order.html', name=Fname) 
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    global idx
+    full_name = request.form.get('full_name')
+    phone_number = request.form.get('phone_number')
+    dob = request.form.get('dob')
+    gender = request.form.get('gender')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    confirm_password = request.form.get('confirm_password')
+    if password != confirm_password: return redirect(url_for(register))
+
+    userID = 'US000'+str(idx)
     conn = get_db_connection()
     cur = conn.cursor()
-    
-    # Truy vấn tên người dùng từ bảng "User"
-    cur.execute('SELECT name, profile_picture FROM "User" WHERE username = %s', (username,))
-    user = cur.fetchone()
-    if user:
-        name = user[0]  # Lấy tên từ kết quả truy vấn
-        profile_picture4 = user[1]
-        logger.debug(f"Fetched name for user {username}: {name}")
-        logger.debug(f"Fetched profile picture for {username}: {name}")  # Log ảnh đại diện đã được lấy
-        if profile_picture4:
-            profile_picture4_base64 = base64.b64encode(profile_picture4).decode('utf-8')  # Chuyển sang chuỗi base64
-        else:
-            profile_picture4_base64 = None
-    else:
-        cur.close()
-        conn.close()
-        return "User not found", 404
-
+    cur.execute(f'''INSERT INTO UserAccount
+            VALUES ('{email}', '{password}');
+                ''')
+    cur.execute(f'''INSERT INTO AppUser
+            VALUES ('{userID}', '{email}');
+                ''')
+    if gender == "male": gender = 'M'
+    if gender == "female": gender = 'F'
+    cur.execute(f'''
+            INSERT INTO Customer
+            VALUES ('{userID}', '{full_name}', '{gender}', '{dob}', '{phone_number}', 0);''')
+    idx+=1
+    print (f"index: {idx}")
     cur.close()
+    conn.commit()
     conn.close()
-    
-    # Truyền dữ liệu vào template
-    return render_template('order.html', name=name, profile_picture4_base64=profile_picture4_base64) 
+    return redirect(url_for('login_for_customer'))
 
 @app.route('/homescreen_admin')
 @login_required
 def homescreen_admin():
-    username = session.get('username')  # Lấy username từ session
-    if not username:
+    email = session.get('email')  # Lấy email từ session
+    if not email:
         return redirect(url_for('login_for_customer'))  # Nếu không có session, chuyển hướng đến trang login
     conn = get_db_connection()
     cur = conn.cursor()
     # Truy vấn tên người dùng từ cơ sở dữ liệu
-    cur.execute('SELECT name, profile_picture FROM "User" WHERE username = %s', (username,))
+    cur.execute('SELECT name, profile_picture FROM "User" WHERE email = %s', (email,))
     user = cur.fetchone()
-     # Lấy thông báo của người dùng
-    cur.execute('SELECT content, time FROM "Notification" WHERE username = %s ORDER BY time DESC', (username,))
-    notifications = cur.fetchall()  # Lấy tất cả thông báo của người dùng
     if user:
         name = user[0]  # Lấy tên từ kết quả truy vấn
         profile_picture5 = user[1]  # Lấy ảnh từ cơ sở dữ liệu (dạng bytea)
-        logger.debug(f"Fetched profile picture for {username}: {name}")  # Log ảnh đại diện đã được lấy
+        logger.debug(f"Fetched profile picture for {email}: {name}")  # Log ảnh đại diện đã được lấy
         if profile_picture5:
             profile_picture5_base64 = base64.b64encode(profile_picture5).decode('utf-8')  # Chuyển sang chuỗi base64
         else:
@@ -338,7 +285,7 @@ def homescreen_admin():
         return "User not found", 404
     cur.close()
     conn.close()
-    return render_template('homescreen_admin.html', name=name, profile_picture5_base64=profile_picture5_base64, notifications=notifications) 
+    return render_template('homescreen_admin.html', name=name, profile_picture5_base64=profile_picture5_base64) 
 
 
 @app.route('/admin_dashboard')
@@ -349,17 +296,14 @@ def admin_dashboard():
 @app.route('/admin_printing_history')
 @login_required
 def admin_printing_history():
-    username = session.get('username')  # Lấy username từ session
-    if not username:
+    email = session.get('email')  # Lấy email từ session
+    if not email:
         return redirect(url_for('login_for_customer'))
     conn = get_db_connection()
     cur = conn.cursor()
     # Truy vấn tên người dùng từ cơ sở dữ liệu
-    cur.execute('SELECT name, profile_picture FROM "User" WHERE username = %s', (username,))
+    cur.execute('SELECT name FROM "User" WHERE email = %s', (email,))
     user = cur.fetchone()
-     # Lấy thông báo của người dùng
-    cur.execute('SELECT content, time FROM "Notification" WHERE username = %s ORDER BY time DESC', (username,))
-    notifications = cur.fetchall()
     # Truy vấn dữ liệu từ bảng admin_printinghistory
     logger.debug("Fetching admin printing history")
     cur.execute('SELECT name, printer_id, file_name, file_size, no_pages, status, time, paper_orientation, print_sides, num_copies, file_type, user_id FROM admin_printinghistory')
@@ -369,7 +313,7 @@ def admin_printing_history():
     if user:
         name = user[0]  # Lấy tên từ kết quả truy vấn
         profile_picture7 = user[1]  # Lấy ảnh từ cơ sở dữ liệu (dạng bytea)
-        logger.debug(f"Fetched profile picture for {username}: {name}")  # Log ảnh đại diện đã được lấy
+        logger.debug(f"Fetched profile picture for {email}: {name}")  # Log ảnh đại diện đã được lấy
         if profile_picture7:
             profile_picture7_base64 = base64.b64encode(profile_picture7).decode('utf-8')  # Chuyển sang chuỗi base64
         else:
@@ -382,27 +326,36 @@ def admin_printing_history():
     conn.close()
     
     # Truyền dữ liệu vào template
-    return render_template('admin_printing_history.html', admin_history=admin_history, name=name,notifications=notifications,profile_picture7_base64=profile_picture7_base64)
+    return render_template('admin_printing_history.html', admin_history=admin_history, name=name, profile_picture7_base64=profile_picture7_base64)
 
 
 @app.route('/login_customer', methods=['POST'])
 def login_customer():
     conn = get_db_connection()
     cur = conn.cursor()
-    username = request.form['username']
+    email = request.form['email']
     password = request.form['password']
-    logger.debug(f"Login attempt: username={username}, password={password}")  # Log input
+    logger.debug(f"Login attempt: email={email}, password={password}")  # Log input
 
-    cur.execute('SELECT * FROM "User" WHERE username = %s AND password = %s', (username, password))
-    user = cur.fetchone()
+    cur.execute(f'''SELECT * FROM UserAccount WHERE email = '{email}' AND pswrd = '{password}';''')
+    user = cur.fetchall()
+    cur.execute(f'''SELECT FName, userID FROM Customer JOIN (SELECT userID FROM AppUser WHERE usEmail = '{email}') ON customerID = userID;''')
     logger.debug(f"User found: {user}")  # Log result from database
-
-    cur.close()
-    conn.close()
-
+    results = cur.fetchall()
+    if results: 
+        FName = results[0][0]
+        userID = results[0][1]
+        cur.close()
+        conn.close()
+    else:
+        cur.close()
+        conn.close()
+        return redirect(url_for('login_for_customer', wrongpw='true'))
     if user:
-        session['username'] = username
-        logger.debug(f"Session saved: {session['username']}")  # Log session
+        session['email'] = email
+        session['Fname'] = FName
+        session['userID'] = userID
+        logger.debug(f"Session saved: {session['email']}")  # Log session
         return redirect(url_for('index'), )
     else:
         return redirect(url_for('login_for_customer', wrongpw='true'))
@@ -411,27 +364,27 @@ def login_customer():
 def login_admin():
     conn = get_db_connection()
     cur = conn.cursor()
-    username = request.form['username']
+    email = request.form['email']
     password = request.form['password']
     # Kiểm tra thông tin đăng nhập
-    cur.execute('SELECT username FROM "User" WHERE username = %s AND password = %s', (username, password))
+    cur.execute(f'''SELECT * FROM UserAccount WHERE email = '{email}' AND pswrd = '{password}';''')
     user = cur.fetchone()
     if user:
         # Kiểm tra vai trò của tài khoản
-        cur.execute('SELECT username FROM "admin" WHERE username = %s', (username,))
+        cur.execute('SELECT email FROM "admin" WHERE email = %s', (email,))
         admin_account = cur.fetchone()
         if admin_account:
             # Nếu là admin
-            session['username'] = username
+            session['email'] = email
             cur.close()
             conn.close()
             return redirect(url_for('homescreen_admin'))  # Trang chủ admin
         # Nếu không phải admin, kiểm tra xem có phải customer
-        cur.execute('SELECT username FROM "customer" WHERE username = %s', (username,))
+        cur.execute('SELECT email FROM "customer" WHERE email = %s', (email,))
         customer_account = cur.fetchone()
         if customer_account:
             # Nếu là customer
-            session['username'] = username
+            session['email'] = email
             cur.close()
             conn.close()
             return redirect(url_for('index'))  # Trang chủ customer
@@ -440,7 +393,7 @@ def login_admin():
         conn.close()
         return redirect(url_for('system_error'))  # Lỗi nếu tài khoản không hợp lệ
     else:
-        # Nếu username hoặc password không đúng
+        # Nếu email hoặc password không đúng
         cur.close()
         conn.close()
         return redirect(url_for('login_for_admin', wrongpw='false'))

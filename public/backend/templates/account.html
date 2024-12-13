@@ -71,10 +71,6 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/navbar.css') }}"
     />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/acccountStyle.css') }}"
-    />
   </head>
   <body>
     <div id="root"></div>
@@ -186,14 +182,14 @@
 			</div>
 		</div>
 		<div class="details-container">
-			<h2>Your Submitted Details</h2>
+			<h2>Your Account Details</h2>
 			<div class="details">
 				<p><strong>Full Name:</strong> <span id="full-name"></span></p>
 				<p><strong>Phone Number:</strong> <span id="phone-number"></span></p>
 				<p><strong>Date of Birth:</strong> <span id="dob"></span></p>
 				<p><strong>Gender:</strong> <span id="gender"></span></p>
 				<p><strong>Email:</strong> <span id="email"></span></p>
-				<p><strong>Password:</strong> <span id="password"></span></p>
+				<p><strong>Points:</strong> <span id="points"></span></p>
 			</div>
 			<div class="back-button">
 				<button onclick="window.history.back()">Go Back</button>
@@ -201,28 +197,51 @@
 			<div class="update-button">
 				<button onClick="window.location.href='account-update';">Change information</button>
 			</div>
+			<div id="delete-button">
+				<button>Delete account</button>
+			</div>
 		</div>
 	
 		<script>
 			// Assuming you have the form data available from a server or a form submission, here we simulate displaying the data
-	
+			async function deleteAccount() {
+				try {
+					// Example API endpoint (replace with your API URL)
+					const response = await fetch('/delete-account');
+					if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+					
+					const data = await response.json();
+					// Display response data
+					responseElement.textContent = JSON.stringify(data, null, 2);
+					window.location.href = '/';
+				} catch (error) {
+					responseElement.textContent = `Error: ${error.message}`;
+				}
+			}
+			document.getElementById('delete-button').addEventListener('click', deleteAccount);
 			// Example values (these would come from a database or form submission)
-			const userDetails = {
-				fullName: "John Doe",
-				phoneNumber: "1234567890",
-				dob: "1990-01-01",
-				gender: "Male",
-				email: "johndoe@example.com",
-				password: "******"  // In real use, passwords should not be shown for security reasons
-			};
-	
+			async function fetchInfo() {
+				try {
+					const response = await fetch(`/get-info`);
+					if (!response.ok) {
+						throw new Error('Info not found');
+					}
+					const userDetails = await response.json();
+					displayInfoDetails(userDetails);
+				} catch (error) {
+					console.error('Error fetching book details:', error);
+				}
+			}
+			function displayInfoDetails(userDetails) {
+				document.getElementById('full-name').textContent = userDetails.fullName;
+				document.getElementById('phone-number').textContent = userDetails.phoneNumber;
+				document.getElementById('dob').textContent = userDetails.dob;
+				document.getElementById('gender').textContent = userDetails.gender;
+				document.getElementById('email').textContent = userDetails.email;
+				document.getElementById('points').textContent = userDetails.points;
+			}
 			// Populate the details on the page
-			document.getElementById('full-name').textContent = userDetails.fullName;
-			document.getElementById('phone-number').textContent = userDetails.phoneNumber;
-			document.getElementById('dob').textContent = userDetails.dob;
-			document.getElementById('gender').textContent = userDetails.gender;
-			document.getElementById('email').textContent = userDetails.email;
-			document.getElementById('password').textContent = userDetails.password;  // Consider removing password display in practice
+			window.onload = fetchInfo;
 		</script>
     </div>
   </body>

@@ -145,26 +145,26 @@
 			</div>
 		</div>
 		<div id="cart-container">
-			<h1>Giỏ Hàng</h1>
+			<h1>Cart</h1>
 			<div id="cart-items"></div>
 		</div>
 		
 		<script>
 			async function loadCart(userId) {
-				const response = await fetch(`/cart?user_id=${userId}`);
+				const response = await fetch(`/cart`);
 				const cartItems = await response.json();
 		
 				const cartContainer = document.getElementById('cart-items');
-				cartItems.forEach(item => {
-					cartContainer.innerHTML += `
-						<div class="cart-item">
-							<img src="${item[4]}" alt="${item[0]}" />
-							<h3>${item[0]}</h3>
-							<p>Amount: ${item[1]}</p>
-							<p>Price: ${item[2]} đ</p>
-						</div>
-					`;
-				});
+				// cartItems.forEach(item => {
+				// 	cartContainer.innerHTML += `
+				// 		<div class="cart-item">
+				// 			<img src="${item[4]}" alt="${item[0]}" />
+				// 			<h3>${item[0]}</h3>
+				// 			<p>Amount: ${item[1]}</p>
+				// 			<p>Price: ${item[2]} đ</p>
+				// 		</div>
+				// 	`;
+				// });
 			}
 		
 			loadCart(1); // Example user ID
